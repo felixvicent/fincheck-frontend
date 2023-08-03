@@ -30,8 +30,8 @@ export function CashIcon() {
         strokeLinejoin="round"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M23.2868 21.0003C23.2868 19.7365 22.2623 18.7129 20.9994 18.7129C19.7355 18.7129 18.7109 19.7365 18.7109 21.0003C18.7109 22.2642 19.7355 23.2878 20.9994 23.2878C22.2623 23.2878 23.2868 22.2642 23.2868 21.0003Z"
         stroke="#495057"
         strokeWidth="1.5"
