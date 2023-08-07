@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useCallback, useState } from "react";
+import { BankAccount } from "../../../../../app/entities/BankAccount";
 
 interface DashboardContextValue {
   areValuesVisible: boolean;
@@ -10,6 +11,10 @@ interface DashboardContextValue {
   closeNewTransactionModal: () => void;
   isNewTransactionModalOpen: boolean;
   newTransactionType: "INCOME" | "EXPENSE" | null;
+  isEditAccountModalOpen: boolean;
+  openEditAccountModal: (bankAccount: BankAccount) => void;
+  closeEditAccountModal: () => void;
+  accountBeingEdited: BankAccount | null;
 }
 
 export const DashboardContext = createContext({} as DashboardContextValue);
@@ -22,6 +27,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [newTransactionType, setNewTransactionType] = useState<
     "INCOME" | "EXPENSE" | null
   >(null);
+  const [isEditAccountModalOpen, setIsEditAccountModalOpen] = useState(false);
+  const [accountBeingEdited, setAccountBeingEdited] =
+    useState<BankAccount | null>(null);
 
   const toggleValueVisibility = useCallback(() => {
     setAreValuesVisible((prevState) => !prevState);
@@ -45,6 +53,16 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     setIsNewTransactionModalOpen(false);
   }, []);
 
+  const openEditAccountModal = useCallback((bankAccount: BankAccount) => {
+    setAccountBeingEdited(bankAccount);
+    setIsEditAccountModalOpen(true);
+  }, []);
+
+  const closeEditAccountModal = useCallback(() => {
+    setAccountBeingEdited(null);
+    setIsEditAccountModalOpen(false);
+  }, []);
+
   return (
     <DashboardContext.Provider
       value={{
@@ -57,6 +75,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
         openNewTransactionModal,
         closeNewTransactionModal,
         newTransactionType,
+        openEditAccountModal,
+        closeEditAccountModal,
+        isEditAccountModalOpen,
+        accountBeingEdited,
       }}
     >
       {children}

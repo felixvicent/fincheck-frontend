@@ -5,24 +5,49 @@ import { ColorsDropdownInput } from "../../../../components/ColorsDropdownInput"
 import { Input } from "../../../../components/Input";
 import { InputCurrency } from "../../../../components/InputCurrency";
 import { Select } from "../../../../components/Select";
-import { useNewAccountController } from "./useNewAccountModalController";
+import { useEditAccountController } from "./useEditAccountModalController";
+import { TrashIcon } from "../../../../components/icons/TrashIcon";
+import { ConfirmDeleteModal } from "../../../../components/ConfirmDeleteModal";
 
-export function NewAccountModal() {
+export function EditAccountModal() {
   const {
-    closeNewAccountModal,
-    isNewAccountModalOpen,
+    closeEditAccountModal,
+    isEditAccountModalOpen,
     errors,
     handleSubmit,
     register,
     control,
     isLoading,
-  } = useNewAccountController();
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleDeleteAccount,
+    isLoadingDelete,
+  } = useEditAccountController();
+
+  if (isDeleteModalOpen) {
+    return (
+      <ConfirmDeleteModal
+        title="Tem certeza que deseja excluir essa conta?"
+        description=" Ao excluir a conta, também serão excluídos todos os registros de
+        receita e despesas relacionados"
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteAccount}
+        isLoading={isLoadingDelete}
+      />
+    );
+  }
 
   return (
     <Modal
-      open={isNewAccountModalOpen}
-      onClose={closeNewAccountModal}
-      title="Nova conta"
+      open={isEditAccountModalOpen}
+      onClose={closeEditAccountModal}
+      title="Editar conta"
+      rightAction={
+        <button onClick={handleOpenDeleteModal}>
+          <TrashIcon className="w-6 h-6 text-red-900" />
+        </button>
+      }
     >
       <form onSubmit={handleSubmit}>
         <div>
@@ -88,7 +113,7 @@ export function NewAccountModal() {
         </div>
 
         <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
-          Criar
+          Salvar
         </Button>
       </form>
     </Modal>
